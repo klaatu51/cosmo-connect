@@ -8,17 +8,22 @@ module.exports = {
 		enabled: true,
 		reporter: "Laboratory"
 	},
-	logger: [{
-		type: "Console",
-		options: {
-			level: "info",
-			colors: true,
-			moduleColors: false,
-			formatter: "full",
-			objectPrinter: null,
-			autoPadding: false
+	logger: [
+		{
+			type: "Console",
+			options: {
+				level: "info",
+				colors: true,
+				moduleColors: false,
+				formatter: "full",
+				objectPrinter: null,
+				autoPadding: false
+			}
+		}, 
+		{
+			type: "Laboratory"
 		}
-	}, "Laboratory"],   
+	],   
 	tracing: {
 		enabled: true,
 		exporter: {
