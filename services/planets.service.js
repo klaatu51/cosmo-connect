@@ -19,7 +19,8 @@ module.exports = {
 				method: "GET",
 				path: "/"
 			},
-			async handler(ctx) {
+			async handler() {
+				this.logger.info("📋 Listing all planets");
 				return this.adapter.find();
 			}
 		},
@@ -30,6 +31,7 @@ module.exports = {
 				path: "/:id"
 			},
 			async handler(ctx) {
+				this.logger.info("🔍 Fetched planet with ID:", ctx.params.id);
 				return this.adapter.findById(ctx.params.id);
 			}
 		},
@@ -44,6 +46,7 @@ module.exports = {
 				type: "string"
 			},
 			async handler(ctx) {
+				this.logger.info("🪐 Planet created", ctx.params);
 				return this.adapter.insert(ctx.params); 
 			}
 		},
@@ -54,6 +57,7 @@ module.exports = {
 				path: "/:id"
 			},
 			async handler(ctx) {
+				this.logger.info("🗑️ Planet deleted with ID:", ctx.params.id);
 				return this.adapter.removeById(ctx.params.id);
 			}
 		}
