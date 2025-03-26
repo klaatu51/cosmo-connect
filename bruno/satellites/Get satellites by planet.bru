@@ -1,0 +1,15 @@
+meta {
+  name: Get satellites by planet
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:3000/api/satellites/planet/:planetId
+  body: none
+  auth: inherit
+}
+
+params:path {
+  planetId: 
+}

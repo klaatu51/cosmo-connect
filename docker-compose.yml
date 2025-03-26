@@ -1,0 +1,73 @@
+services:
+  api:
+    build:
+      context: .
+    image: api
+    env_file: docker-compose.env
+    environment:
+      NODEID: api
+      SERVICES: api
+      PORT: 3000
+    depends_on:
+      - nats
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api-gw.rule=PathPrefix(`/`)"
+      - "traefik.http.services.api-gw.loadbalancer.server.port=3000"
+
+  planets:
+    build:
+      context: .
+    image: planets
+    env_file: docker-compose.env
+    environment:
+      NODEID: planets
+      SERVICES: planets
+    depends_on:
+      - nats
+
+  satellites:
+    build:
+      context: .
+    image: satellites
+    env_file: docker-compose.env
+    environment:
+      NODEID: satellites
+      SERVICES: satellites
+    depends_on:
+      - nats
+
+  lab:
+    build:
+      context: .
+    image: lab
+    env_file: docker-compose.env
+    environment:
+      NODEID: laboritory
+      SERVICES: lab
+    ports:
+      - 3210:3210
+    depends_on:
+      - nats
+
+  nats:
+    image: nats:2
+
+  mongo:
+    image: mongo
+    ports:
+      - 8081:8081
+#    volumes:
+#      - ./db:/data/db
+
+  traefik:
+    image: traefik:v2.4
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+    ports:
+      - 3000:80
+      - 3001:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
